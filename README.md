@@ -1,40 +1,52 @@
-# Modular Media Suite — Reference Implementation
+# Modular Media Streaming Suite
 
-This repository contains a small reference Java project that demonstrates structural design patterns for a modular media streaming suite.  
-It is educational: it simulates playback and demonstrates Adapter, Composite, Decorator, Proxy, and Strategy patterns.
+## Overview
+The **Modular Media Streaming Suite** is a Java-based simulation of a flexible and extensible media playback system.  
+It demonstrates the application of **structural design patterns** to build a modular, scalable, and maintainable architecture.  
+The system focuses on conceptual design rather than actual media rendering, using console output to simulate functionality.
 
-## Repo layout
+---
 
-Modular Media Streaming Suite (Java) — demo project
---------------------------------------------------
+## System Architecture
+The suite is organized into modular packages, each representing a distinct subsystem:
 
-Requirements
-- Java 17+
-- Maven 3.6+
+- **`media.source`** — Handles different media sources such as local files, HLS streams, and remote APIs.  
+- **`media.proxy`** — Implements a caching proxy to simulate remote data retrieval and reuse.  
+- **`media.plugin`** — Provides decorators for extending playback behavior (e.g., watermarking, audio equalization).  
+- **`media.playlist`** — Demonstrates the Composite pattern by combining single files and sub-playlists.  
+- **`media.player`** — Manages playback and rendering strategies (hardware or software).  
 
-Build & Run
-1. Build:
-   mvn -q -DskipTests package
+Each package interacts through well-defined interfaces, ensuring low coupling and high modularity.
 
-2. Run demo:
-   mvn exec:java
+---
 
-What the Demo does
-- Constructs multiple sources (local, HLS, remote API), wraps remote with a caching proxy.
-- Adapts a legacy source via Adapter.
-- Builds a Composite playlist containing files and playlists.
-- Plays the playlist with a hardware renderer.
-- Applies a decorator stack (Watermark + Equalizer) and replays a remote cached source (shows cache hit/miss).
-- Switches renderer at runtime to software renderer and plays a local file.
+## Design Patterns Used
+| Pattern | Description | Example Use |
+|----------|--------------|-------------|
+| **Adapter** | Converts incompatible interfaces into a usable form. | Adapting legacy sources into the `MediaSource` interface. |
+| **Composite** | Represents hierarchical structures as tree components. | Organizing nested playlists. |
+| **Decorator** | Dynamically adds extra features to objects. | Applying watermark or equalizer during playback. |
+| **Proxy** | Controls access and adds caching to remote resources. | Caching remote media streams. |
+| **Strategy** | Defines interchangeable algorithms or behaviors. | Switching between hardware and software renderers. |
 
-Commands to include in your video
-- Show directory structure.
-- Open `docs/` and display the `class_diagram.puml` and `sequence_play.puml` (PlantUML can render them).
-- Run `mvn exec:java` and record:
-  - Assemble and play playlist (30-60s)
-  - Apply watermark decorator + equalizer (20-40s)
-  - Switch renderer (hardware -> software) and play local (20-40s)
-- Close with a short reflection (60-90s) using content from `docs/design_rationale.md`.
+These patterns collectively enable flexibility, scalability, and reusability across system modules.
 
-Suggested short tests
-- Validate that proxy caches by calling `player.playSource(cachedRemote)` twice and confirming "Cache HIT" on second call.
+---
+
+## Process Flow
+1. Initialize multiple media sources (local, remote, HLS).  
+2. Wrap remote sources with a proxy to simulate caching.  
+3. Construct composite playlists containing both media files and nested playlists.  
+4. Apply decorators such as `WatermarkDecorator` and `EqualizerDecorator`.  
+5. Switch between rendering strategies at runtime.  
+6. Simulated playback and cache behaviors are displayed through console messages.
+
+---
+
+## Example Console Output
+Playing from local file: myvideo.mp4
+Applying WatermarkDecorator...
+Applying EqualizerDecorator...
+Switching to Software Renderer...
+Playing from remote (Cache MISS)
+Playing from remote (Cache HIT)
